@@ -1,5 +1,6 @@
 import 'package:e_commerce/control_view.dart';
 import 'package:e_commerce/core/view_model/home_view_model.dart';
+import 'package:e_commerce/view/checkout/checkout_view.dart';
 import 'package:e_commerce/view/register_view.dart';
 import "package:flutter/material.dart";
 import 'package:e_commerce/view/auth/login_screen.dart';

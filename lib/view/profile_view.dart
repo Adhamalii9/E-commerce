@@ -32,12 +32,12 @@ class ProfileView extends StatelessWidget {
                                           image: controller.userModel == null
                                               ? AssetImage(
                                                   'assets/images/google.png')
-                                              : controller.userModel.pic ==
+                                              : (controller.userModel.pic ==
                                                       'default'
                                                   ? AssetImage(
                                                       'assets/images/google.png')
                                                   : NetworkImage(controller
-                                                      .userModel.pic)))),
+                                                      .userModel.pic)) as ImageProvider<Object>))),
                               SizedBox(
                                 width: 20,
                               ),

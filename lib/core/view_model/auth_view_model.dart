@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:e_commerce/control_view.dart';
 import 'package:e_commerce/core/services/firestore_user.dart';
 import 'package:e_commerce/helper/local_storage_data.dart';
@@ -5,7 +7,8 @@ import 'package:e_commerce/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:e_commerce/view/home_view.dart';
@@ -17,6 +20,7 @@ class AuthViewModel extends GetxController {
   FacebookLogin _facebookLogin = FacebookLogin();
   String email, password, name;
   Rxn<User> _user = Rxn<User>();
+
 
   String get user => _user.value?.email;
 
@@ -33,7 +37,7 @@ class AuthViewModel extends GetxController {
   }
 
   void googleSignInMethod() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAccount googleUser = await (_googleSignIn.signIn() as FutureOr<GoogleSignInAccount>);
     GoogleSignInAuthentication googleSignInAuthentication =
         await googleUser.authentication;
 
@@ -48,11 +52,11 @@ class AuthViewModel extends GetxController {
   }
 
   void FacebookSignInMethod() async {
-    FacebookLoginResult result = await _facebookLogin.logIn(['email']);
+    FacebookLoginResult result = await _facebookLogin.logIn(customPermissions:['email']);
 
     final accessToken = result.accessToken.token;
 
-    if (result.status == FacebookLoginStatus.loggedIn) {
+    if (result.status == FacebookLoginStatus.success) {
       final faceCredential = FacebookAuthProvider.credential(accessToken);
 
       await _auth.signInWithCredential(faceCredential).then((user) async {
@@ -71,7 +75,7 @@ class AuthViewModel extends GetxController {
       });
       Get.offAll(ControlView());
     } catch (e) {
-      print(e.message);
+      print(e);
       Get.snackbar('Error login account', "THE E-MAIL/PASSWORD IS INCORRECT",
           colorText: Colors.black, snackPosition: SnackPosition.BOTTOM);
     }
@@ -87,7 +91,7 @@ class AuthViewModel extends GetxController {
 
       Get.offAll(ControlView());
     } catch (e) {
-      print(e.message);
+      print(e);
       Get.snackbar('Error login account', "THE E-MAIL/PASSWORD IS INCORRECT",
           colorText: Colors.black, snackPosition: SnackPosition.BOTTOM);
     }
@@ -106,7 +110,7 @@ class AuthViewModel extends GetxController {
 
   void getCurrentUserData(String uid) async {
     await FirestoreUser().getCurrentUser(uid).then((value) {
-      setUser(UserModel.fromJson(value.data()));
+      setUser(UserModel.fromJson(value.data() as Map<dynamic, dynamic>));
     });
   }
 }

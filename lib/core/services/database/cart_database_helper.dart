@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:e_commerce/Constance.dart';
 import 'package:e_commerce/model/cart_product_model.dart';
 import 'package:e_commerce/model/product_model.dart';
@@ -38,13 +40,13 @@ class CartDatabaseHelper {
   }
 
   insert(CartProductModel model) async {
-    var dbClient = await database;
+    var dbClient = await (database as FutureOr<Database>);
     await dbClient.insert(tableCartProduct, model.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<List<CartProductModel>> getAllProduct() async {
-    var dbClient = await database;
+    var dbClient = await (database as FutureOr<Database>);
     List<Map> maps = await dbClient.query(tableCartProduct);
     List<CartProductModel> list = maps.isNotEmpty
         ? maps.map((product) => CartProductModel.fromJson(product)).toList()
@@ -54,7 +56,7 @@ class CartDatabaseHelper {
   }
 
   updateProduct(CartProductModel model) async{
-    var dbClient = await database;
+    var dbClient = await (database as FutureOr<Database>);
     return await dbClient.update(tableCartProduct, model.toJson(),
     where: '$columnProductId = ?', whereArgs: [model.productId]
     );

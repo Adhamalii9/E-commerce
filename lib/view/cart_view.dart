@@ -1,6 +1,7 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:e_commerce/Constance.dart';
 import 'package:e_commerce/core/view_model/cart_view_model.dart';
+import 'package:e_commerce/view/checkout/checkout_view.dart';
 import 'package:e_commerce/view/profile_view.dart';
 import 'package:e_commerce/view/home_view.dart';
 import 'package:e_commerce/view/widgets/custom_text.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get.dart';
 import '../core/view_model/home_view_model.dart';
+import 'checkout/checkout_view.dart';
 
 class CartView extends StatelessWidget {
   @override
@@ -29,7 +31,7 @@ class CartView extends StatelessWidget {
                 color: Colors.black,
                 size: 22,
               ),
-              
+
             ],
           ),
         )
@@ -183,7 +185,9 @@ class CartView extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8)),
                                 color: primaryColor1,
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.to(CheckOutView());
+                                },
                                 child: CustomText(
                                   text: "CHECKOUT",
                                   size: 20,
